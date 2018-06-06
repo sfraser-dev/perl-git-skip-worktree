@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 # run this after a clean and then a rebuild all
+# git keeps a record of all files that it is skipping locally ("worktree skip record")
+# run worktreeSkipReverse.pl to remove files from the "worktree skip record"
 
 # runs with Strawberry Perl: http://strawberryperl.com/
 
@@ -17,7 +19,9 @@ my $path;
 my $suffix;
 
 my $theFile= "worktreeSkipFiles.txt";
+# list all files that have changed since last commit
 system("git diff --name-only >$theFile");
+
 # read each line from the file into an array
 open my $handleIn, '<', $theFile or die "Could not open file '$theFile' $!";
 chomp (my @linesIn = <$handleIn>);
@@ -32,22 +36,22 @@ foreach my $line (@linesIn) {
         say "WARNING: Source file. Exiting";
         exit;
     }
-    # encase filename / filepath in quotes to handle spaces
+    # add file to "worktree skip record"; encase filename / filepath in quotes to handle spaces
     system("git update-index --skip-worktree \"$line\"");
 }
 
 # find all files (that user wishes to ignore locally) from current and sub directories
-#find( \&filesWanted, '.'); 
+find( \&filesWanted, '.'); 
 # process each line from the array (add each file to the "worktree skip record")
-#foreach my $line (@content) {
-#    chomp($line);
-#    # remove the "./" at the start of each line (indicating a skipped worktree file)
-#    my $n=2;
-#    $line =~ s/^.{$n}//s;
-#    say $line;
-#    # encase filename / filepath in quotes to handle spaces
-#    system("git update-index --skip-worktree \"$line\"");
-#}
+foreach my $line (@content) {
+    chomp($line);
+    # remove the "./" at the start of each line (indicating a skipped worktree file)
+    my $n=2;
+    $line =~ s/^.{$n}//s;
+    say $line;
+    # add file to "worktree skip record"; encase filename / filepath in quotes to handle spaces
+    system("git update-index --skip-worktree \"$line\"");
+}
 exit;
 
 sub filesWanted{

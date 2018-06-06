@@ -11,6 +11,7 @@ use Cwd;
 use POSIX qw(floor);
 
 my $theFile= "worktreeSkipReverseFiles.txt";
+# list the git "worktree skip record"
 system("git ls-files -v . | grep \"\^S\" >$theFile");
 
 # read each line from the file into an array
@@ -24,7 +25,7 @@ foreach my $line (@linesIn) {
     my $n=2;
     $line =~ s/^.{$n}//s;
     say $line;
-    # encase filename / filepath in quotes to handle spaces
+    # remove file from "worktree skip record"; encase filename / filepath in quotes to handle spaces
     system("git update-index --no-skip-worktree \"$line\"");
 }
 
