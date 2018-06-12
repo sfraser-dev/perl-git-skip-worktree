@@ -1,9 +1,9 @@
 #!/usr/bin/perl -w
 # steps:
-# 1. get all code from VSS; inital commit select all (including ignored) to git
-# 2. add the template git ignore file for visual studio
+# 1. get all code from VSS; select all (including ignored) and commit to git
+# 2. add template git ignore file (this won't ignore files from step 1, it'll ignore newly created build files)
 # 3. clean all and then rebuild all
-# 4. run this script to worktree-skip files that building changes (.DLL, .pdb, .log, .txt, .cache)
+# 4. run this script to worktree-skip files that building changes from step 1 (.DLL, .pdb, .log, .txt, .cache)
 #
 # git keeps a record of all files that it is skipping locally ("worktree skip record")
 # run worktreeSkipReverse.pl to remove files from the "worktree skip record"
