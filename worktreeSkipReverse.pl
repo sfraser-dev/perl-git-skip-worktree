@@ -10,7 +10,7 @@ use File::Basename;
 use Cwd;
 use POSIX qw(floor);
 
-my $theFile= "worktreeSkipReverseFiles.txt";
+my $theFile= "worktreeSkipReverse.textlog";
 # list the git "worktree skip record"
 system("git ls-files -v . | grep \"\^S\" >$theFile");
 
@@ -29,4 +29,4 @@ foreach my $line (@linesIn) {
     system("git update-index --no-skip-worktree \"$line\"");
 }
 
-exit;
+exit 0;
