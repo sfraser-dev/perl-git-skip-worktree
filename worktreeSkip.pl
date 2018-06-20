@@ -11,6 +11,10 @@
 #
 # runs with Strawberry Perl: http://strawberryperl.com/
 
+
+# du -a | gsort -n >results.txt (files and dirs sorted by size in kb)
+
+
 use strict;
 use warnings;
 use feature qw(say);
