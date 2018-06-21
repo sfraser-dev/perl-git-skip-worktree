@@ -11,10 +11,6 @@
 #
 # runs with Strawberry Perl: http://strawberryperl.com/
 
-
-# du -a | gsort -n >results.txt (files and dirs sorted by size in kb)
-
-
 use strict;
 use warnings;
 use feature qw(say);
@@ -28,7 +24,8 @@ my $name;
 my $path;
 my $suffix;
 
-my $userSpecified = 1;
+# Use gitigore from the start!
+my $userSpecified = 0;
 
 ############### add files that have changed since last commit to "worktree skip record" ###############
 my $theFile= "worktreeSkip.textlog";
@@ -42,6 +39,7 @@ close $handleIn;
 # process each line from the array (add each file to the "worktree skip record")
 foreach my $line (@linesIn) {
     chomp($line);
+    say "";
     say "DIFF: $line";
     # don't add changed source files to the "worktree skip record"; exit script if source file found  
     ($name,$path,$suffix) = fileparse($line,qr"\..[^.]*$");
@@ -71,18 +69,21 @@ foreach my $line (@linesIn) {
 
 ############### user specified files to be added to "worktree skip record" ###############
 if ($userSpecified == 1){
-    # find all files (that user wishes to ignore locally) from current and sub directories
-    find( \&filesWanted, '.'); 
-    # process each line from the array (add each file to the "worktree skip record")
-    foreach my $line (@contentSkip) {
-        chomp($line);
-        # remove the "./" at the start of each line (indicating a skipped worktree file)
-        my $n=2;
-        $line =~ s/^.{$n}//s;
-        say "USER: $line";
-        # add file to "worktree skip record"; encase filename / filepath in quotes to handle spaces
-        system("git update-index --skip-worktree \"$line\"");
-    }
+    say "";
+    say "WARNING: adding many files to 'worktree skip record' bloats .git/ and causes malloc/mmap errors on my 32-bit 4GB ram DVR ... use gitignore file instead";
+    say "SKIPPING user specified files";
+    ## find all files (that user wishes to ignore locally) from current and sub directories
+    #find( \&filesWanted, '.'); 
+    ## process each line from the array (add each file to the "worktree skip record")
+    #foreach my $line (@contentSkip) {
+    #    chomp($line);
+    #    # remove the "./" at the start of each line (indicating a skipped worktree file)
+    #    my $n=2;
+    #    $line =~ s/^.{$n}//s;
+    #    say "USER: $line";
+    #    # add file to "worktree skip record"; encase filename / filepath in quotes to handle spaces
+    #    system("git update-index --skip-worktree \"$line\"");
+    #}
 }
 
 exit 0;
