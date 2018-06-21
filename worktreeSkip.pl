@@ -10,6 +10,10 @@
 # run worktreeSkipReverse.pl to remove files from the "worktree skip record"
 #
 # runs with Strawberry Perl: http://strawberryperl.com/
+#
+# GOW commands to find only files then sort them by size (du sizes in kb)
+# $> gfind vss2017_11p0_vstudio2015/ -type f -exec du -a {} ; >listFilesAndTheirSizes.textlog
+# $> gsort -n listFilesAndTheirSizes.textlog >listFilesAndTheirSizesSorted.textlog
 
 use strict;
 use warnings;
