@@ -45,6 +45,9 @@
 *.iobj
 *.ipch
 *.chm
+SampleGrabber_dlldata.c
+VisualDVR.exe.embed.manifest
+VisualDVR_manifest.rc
 
 # User-specific files
 *.suo
