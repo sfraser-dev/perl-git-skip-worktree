@@ -6,6 +6,12 @@
 # 4. clean all and then rebuild all
 # 5. run this script to 'assume unchanged' files that building changes (.DLL, .pdb, .log, .txt, .cache, etc ...)
 #
+# GIT REPO STRUCTURE: 
+# Best to have one "pure" repo containing all VSS code.
+# The "pure" repo should not have an ignore file (nor assumeUnchanged files).
+# An ignore file in "pure" would, for example, ignore new .libs/.dlls added by other users.
+# My working repos should pull from the "pure" repo and then push elsewhere (eg: debian -> laptop -> VSS).
+#
 # TRACK: 
 # git keeps a record of all files that it is assuming unchanged locally ("assume unchanged record")
 # run assumeUnchangedReverse.pl to remove files from the "assume unchanged record"
