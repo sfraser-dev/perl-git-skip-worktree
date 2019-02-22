@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 # STEPS:
 # 1. get all code from VSS in git wrapper
-# 2. run this file (assume unchanged user specified files; visual studio not running)
+# 2. run this script (assume unchanged user specified files; visual studio not running)
 # 3. add template git ignore file (this won't ignore files from step 1, it'll ignore newly created build files)
 # 4. clean all and then rebuild all
 # 5. run this script to 'assume unchanged' files that building changes (.DLL, .pdb, .log, .txt, .cache, etc ...)
@@ -44,9 +44,10 @@ my $suffix;
 # Use gitigore from the start!
 my $userSpecified = 1;
 
-############### add files that have changed since last commit to "assume unchanged record" ###############
+############### run this after a clean all / rebuild all (to see what binary files change after a rebuild
+############### add files that have changed since last build to "assume unchanged record" ###############
 my $theFile= "assumeUnchanged.textlog";
-# list all files that have changed since last commit
+# list all files that have changed since last build
 system("git diff --name-only >$theFile");
 
 # read each line from the file into an array
@@ -118,6 +119,8 @@ sub filesWanted{
     }
     say "found $file"; 
     if ( ($tagLetter ne 'h') ){
+        if ($file =~ /\.zip$/) { push @contentSkip, $file; say "skipping $file"; }
+        if ($file =~ /_h\.h$/) { push @contentSkip, $file; say "skipping $file"; }
         if ($file =~ /\.user$/) { push @contentSkip, $file; say "skipping $file"; }
         if ($file =~ /\.cache$/){ push @contentSkip, $file; say "skipping $file"; }
         if ($file =~ /\.db$/) { push @contentSkip, $file; say "skipping $file"; }
@@ -149,5 +152,14 @@ sub filesWanted{
         if ($file =~ /\.tlb$/){ push @contentSkip, $file; say "skipping $file"; }
         if ($file =~ /\.bin$/){ push @contentSkip, $file; say "skipping $file"; }
         if ($file =~ /\.DLL$/){ push @contentSkip, $file; say "skipping $file"; }
+        if ($file =~ /\.nupkg$/){ push @contentSkip, $file; say "skipping $file"; }
+        if ($file =~ /\.sbr$/){ push @contentSkip, $file; say "skipping $file"; }
+        if ($file =~ /\.pdf$/){ push @contentSkip, $file; say "skipping $file"; }
+        if ($file =~ /\.iobj$/){ push @contentSkip, $file; say "skipping $file"; }
+        if ($file =~ /\.ipch$/){ push @contentSkip, $file; say "skipping $file"; }
+        if ($file =~ /\.chm$/){ push @contentSkip, $file; say "skipping $file"; }
+        if ($file =~ /SampleGrabber_dlldata\.c/){ push @contentSkip, $file; say "skipping $file"; }
+        if ($file =~ /VisualDVR\.exe\.embed\.manifest/){ push @contentSkip, $file; say "skipping $file"; }
+        if ($file =~ /VisualDVR_manifest\.rc/){ push @contentSkip, $file; say "skipping $file"; }
         }
 }
